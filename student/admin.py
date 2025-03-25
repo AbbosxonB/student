@@ -20,6 +20,22 @@ class TuriAdmin(admin.ModelAdmin):
 class FanAdmin(admin.ModelAdmin):
     list_display = ['name', 'status']
 
+@admin.register(Guruh)
+class GuruhAdmin(admin.ModelAdmin):
+    list_display = ('name', 'status', 'yunalish_display', 'kursi_display')
+    list_filter = ('name', 'yunalish', 'kursi')
+
+    def yunalish_display(self, obj):
+        return ", ".join([y.name for y in obj.yunalish.all()])
+    
+    yunalish_display.short_description = "Yunalishlar"
+
+    def kursi_display(self, obj):
+        return obj.kursi.name if obj.kursi else "Mavjud emas"
+    
+    kursi_display.short_description = "Kurs"
+
+
 @admin.register(Test)
 class TestAdmin(admin.ModelAdmin):
     list_display = ('question', 'get_subjects', 'correct')

@@ -61,3 +61,17 @@ class Test(models.Model):
         
     def __str__(self):
         return self.question
+    
+
+class Guruh(models.Model):
+    name = models.CharField(max_length=100)
+    yunalish = models.ManyToManyField(Yunalish)
+    kursi = models.ManyToManyField(Kursi)
+    shakli = models.ManyToManyField(Shakli)
+    turi = models.ManyToManyField(Turi)
+    status = models.CharField(max_length=45, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='active')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
