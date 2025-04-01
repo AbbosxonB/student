@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <div class="module">
+        <h2>📥 Excel fayl yuklash</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p><label for="id_fan">Fan tanlang:</label> {{ form.fan }}</p>
+            <p><label for="id_excel_file">Excel fayl yuklang:</label> {{ form.excel_file }}</p>
+            
+            <button type="submit" class="button">📤 Yuklash</button>
+        </form>
+        
+        <br>
+        <a href="..">⬅️ Ortga qaytish</a>
+    </div>
+{% endblock %}
+

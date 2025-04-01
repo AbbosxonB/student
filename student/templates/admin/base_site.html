@@ -1,0 +1,11 @@
+
+{% block content %}
+    <h2>📥 Excel fayl yuklash</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">📤 Yuklash</button>
+    </form>
+    <br>
+    <a href="..">⬅️ Ortga qaytish</a>
+{% endblock %}

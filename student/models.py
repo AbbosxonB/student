@@ -39,11 +39,12 @@ class Turi(models.Model):  #bakalavr, magistr
        return self.name  # Admin panelda sarlavha ko'rsatiladi
     
 class Fan(models.Model):   # fan nomi
+    name = models.CharField(max_length=100)
     kursi = models.ManyToManyField(Kursi)
     yunalish = models.ManyToManyField(Yunalish)
     shakli = models.ManyToManyField(Shakli)
-    turi = models.ManyToManyField(Turi)
-    name = models.CharField(max_length=100)
+    turi = models.ManyToManyField(Turi)   
+    smestr= models.IntegerField()
     status = models.CharField(max_length=45, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='active')
     created_at = models.DateTimeField(auto_now_add=True)   # Yaratilgan vaqt
     updated_at = models.DateTimeField(auto_now=True)       # Yangilangan vaqt
@@ -69,6 +70,7 @@ class Guruh(models.Model):
     kursi = models.ManyToManyField(Kursi)
     shakli = models.ManyToManyField(Shakli)
     turi = models.ManyToManyField(Turi)
+    fan = models.ManyToManyField(Fan)
     status = models.CharField(max_length=45, choices=[('active', 'Active'), ('inactive', 'Inactive')], default='active')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
