@@ -79,13 +79,3 @@ class Guruh(models.Model):
 
 
 
-class YourModel(models.Model):
-    
-    question = models.TextField(max_length=200)
-    correct = models.CharField(max_length=200)
-    wrong1 = models.CharField(max_length=200)
-    wrong2 = models.CharField(max_length=200)
-    wrong3 = models.CharField(max_length=200) # Email maydoni
-
-    def __str__(self):
-        return self.question
