@@ -6,7 +6,12 @@ from student import views
 
 urlpatterns = [
 
- path('', views.index, name='home'),
+ path('', views.form, name='form'),
+ path('ajax/kurslar/', views.get_kurslar, name='ajax_kurslar'),
+ path('ajax/guruhlar/', views.get_guruhlar, name='ajax_guruhlar'),
+ path('ajax/fanlar/', views.get_fanlar, name='ajax_fanlar'),
+
+#  path('form/', views.form, name='form'),
  
     # path('about/', views.about, name='about'),  # localhost:8000/about/
     # path('team/', views.team, name='team'),  # localhost:8000/team/

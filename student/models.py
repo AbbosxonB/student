@@ -78,6 +78,6 @@ class Guruh(models.Model):
     def __str__(self):
         return self.name
 
-
+class form(models.Model)
 
 
