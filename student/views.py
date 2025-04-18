@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import *
 # Create your views here.
@@ -39,3 +39,42 @@ def get_fanlar(request):
 
 def saqlash(request):
     return render(request, 'test.html')
+
+
+from random import sample
+from .models import Test
+
+
+def get_random_questions(fan_id):
+    # Ma'lum fan bo'yicha 25 ta tasodifiy savol olish
+    questions = Test.objects.filter(fan_id=fan_id)
+
+    # Agar savollar soni 25 dan ko'proq bo'lsa, tasodifiy tanlash
+    if questions.count() > 25:
+        questions = sample(list(questions), 25)
+
+    return questions
+
+def start_test(request):
+    if request.method == 'POST':
+        fan_id = request.POST.get('fan_id')
+        if not fan_id:
+            return render(request, 'form.html', {
+                'error': 'Fanni tanlang'
+            })
+        else:
+            fan_id = int(fan_id)
+            questions = get_random_questions(fan_id)
+        return render(request, 'start_test.html', {
+            'fan': fan_id,
+            'questions': questions,
+        })
+    # return render(request, 'form.html')
+
+# def test_views(request):
+
+
+
+
+
+

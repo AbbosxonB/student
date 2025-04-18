@@ -78,6 +78,15 @@ class Guruh(models.Model):
     def __str__(self):
         return self.name
 
-class form(models.Model)
+    
 
 
+
+class Result(models.Model):
+    student = models.CharField(max_length= 200)  # Foydalanuvchi
+    correct_answers = models.IntegerField()  # To'g'ri javoblar soni
+    total_questions = models.IntegerField()  # Savollar soni
+    timestamp = models.DateTimeField(auto_now_add=True)  # Natija yozilgan vaqt
+
+    def str(self):
+        return f'{self.student} - {self.correct_answers} ta to\'g\'ri javob'

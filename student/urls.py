@@ -10,6 +10,8 @@ urlpatterns = [
  path('ajax/kurslar/', views.get_kurslar, name='ajax_kurslar'),
  path('ajax/guruhlar/', views.get_guruhlar, name='ajax_guruhlar'),
  path('ajax/fanlar/', views.get_fanlar, name='ajax_fanlar'),
+ path('test/', views.start_test, name='test'),
+ # path('test/', views.start_test, name='test'),
 
 #  path('form/', views.form, name='form'),
  

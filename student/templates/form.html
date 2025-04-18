@@ -11,7 +11,8 @@
   <div class="container">
     <img src="https://admission.tiiu.uz/_next/image?url=%2Fassets%2Funiver-logo.png&w=96&q=75" alt="Logo" class="logo">
     <h2>TEST</h2>
-    <form id="registrationForm">
+    <form id="registrationForm" action="{% url 'test' %}" method="post">
+    {% csrf_token %}
       <label for="name">F.I.O</label>
       <input type="text" id="name" placeholder="Familiya ismingizni kiriting:" required>
 
@@ -106,6 +107,19 @@
             });
         });
 });
+
+
+  document.getElementById("registrationForm").addEventListener("submit", function (e) {
+      const fanId = document.getElementById("fan").value;
+      if (!fanId) {
+          alert("Iltimos, fanni tanlang!");
+          e.preventDefault();
+          return;
+      }
+
+      this.action = `/test/${fanId}/`;  // bu `urls.py` dagi path bilan mos bo‘lishi kerak
+  });
+
 
     </script>
 </body>
