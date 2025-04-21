@@ -11,7 +11,7 @@
   <div class="container">
     <img src="https://admission.tiiu.uz/_next/image?url=%2Fassets%2Funiver-logo.png&w=96&q=75" alt="Logo" class="logo">
     <h2>TEST</h2>
-    <form id="registrationForm" action="{% url 'test' %}" method="post">
+    <form id="registrationForm" action="{% url 'tests' %}" method="POST">
     {% csrf_token %}
       <label for="name">F.I.O</label>
       <input type="text" id="name" placeholder="Familiya ismingizni kiriting:"   required>
@@ -50,7 +50,7 @@
       </select>
       
       <label for="fan">Fan nomi:</label>
-      <select id="fan" required>
+      <select id="fan" name="fan_id" required>
         <option value="">Select...</option>
         {% for fan in fanlar %}
         <option value="{{fan.id}}">{{fan.name}}</option>
@@ -58,8 +58,8 @@
         
         <!-- Boshqa davlatlar qo‘shsa bo‘ladi -->
       </select>
-        
-      <button type="submit">Testni boshlash</button>
+
+        <a href="{% url 'tests' %}"><button  type="submit">Testni boshlash</button></a>
     </form>
   </div>
 

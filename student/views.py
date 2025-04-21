@@ -69,9 +69,19 @@ def start_test(request):
             'fan': fan_id,
             'questions': questions,
         })
-    # return render(request, 'form.html')
+    return render(request, 'form.html')
 
-# def test_views(request):
+def test_views(request):
+    print("Request method:", request.method)
+    print("POST data:", request.POST)
+    if request.method == 'POST':
+        fan_id = request.POST.get('fan_id')
+    else:
+        fan_id = None
+
+    return render(request, 'tests.html', {
+        'fan': fan_id,
+    })
 
 
 
