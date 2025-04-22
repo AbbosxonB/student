@@ -10,7 +10,8 @@ urlpatterns = [
  path('ajax/kurslar/', views.get_kurslar, name='ajax_kurslar'),
  path('ajax/guruhlar/', views.get_guruhlar, name='ajax_guruhlar'),
  path('ajax/fanlar/', views.get_fanlar, name='ajax_fanlar'),
- path('test/<int:id>/', views.test_views, name='test'),
+ path('start-test/<int:id>/', views.test_views, name='start_test'),
+ path('submit-test/<int:fan_id>/', views.submit_test, name='submit_test'),
  # path('tests/', views.test_views, name='tests'),
 
 #  path('form/', views.form, name='form'),

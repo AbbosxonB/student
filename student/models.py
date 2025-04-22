@@ -86,7 +86,7 @@ class Natija(models.Model):
     fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
     ism = models.CharField(max_length=100)
     familiya = models.CharField(max_length=100)
-    kurs = models.IntegerField()
+    kurs = models.CharField(max_length=50)
     guruh = models.CharField(max_length=50)
     yonalish = models.CharField(max_length=100)
     togri_soni = models.IntegerField()

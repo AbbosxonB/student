@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from .models import *
 # Create your views here.
@@ -84,6 +84,8 @@ def test_views(request, id):
         guruh = get_object_or_404(Guruh, id=request.POST.get('guruh_id'))
         yonalish = get_object_or_404(Yunalish, id=request.POST.get('yunalish_id'))
 
+       
+
 
     return render(request, 'tests.html', {
         'fan': fan,
@@ -93,6 +95,57 @@ def test_views(request, id):
         'yonalish': yonalish,
         'questions': questions,  # fan_id bilan bir xil bo'lishi kerak emas, lekin xohlasangiz yuborish mumkin
     })
+
+
+def submit_test(request, id):
+    
+
+    if request.method == "POST":
+        fan = get_object_or_404(Fan, id=id)
+        questions = Test.objects.filter(fan=fan)
+        name = request.POST.get('name')
+        # fan= request.POST.get('fan_id')
+        kurs = get_object_or_404(Kursi,id=request.POST.get('kurs_id'))
+        guruh = get_object_or_404(Guruh, id=request.POST.get('guruh_id'))
+        yonalish = get_object_or_404(Yunalish, id=request.POST.get('yunalish_id'))
+
+        togrilar = 0
+
+        for question in questions:
+            tanlangan = request.POST.get(f'answer_{question.id}')
+            if tanlangan == question.correct:
+                togrilar += 1
+
+        # Natijani saqlash
+        Natija.objects.create(
+            fan=fan,
+            ism=name,
+            kurs=kurs,
+            guruh=guruh,
+            yonalish=yonalish,
+            togri_soni=togrilar,
+            umumiy_savollar=questions.count()
+        )
+        return render(request, 'natija.html', {
+            'ism': name,
+            'familiya': name,
+            'kurs': kurs,
+            'guruh': guruh,
+            'yonalish': yonalish,
+            'togri': togrilar,
+            'umumiy': questions.count(),
+            'fan': fan,
+        })
+
+
+    else:
+        return redirect('start_test', fan_id=id)
+
+
+
+
+
+
 
 
 
