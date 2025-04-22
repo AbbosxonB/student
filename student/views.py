@@ -76,8 +76,21 @@ def start_test(request):
 def test_views(request, id):
     fan = get_object_or_404(Fan, id=id)
     questions = Test.objects.filter(fan=fan)
+
+    if request.method == "POST":
+        name = request.POST.get('name')
+        # fan= request.POST.get('fan_id')
+        kurs = get_object_or_404(Kursi,id=request.POST.get('kurs_id'))
+        guruh = get_object_or_404(Guruh, id=request.POST.get('guruh_id'))
+        yonalish = get_object_or_404(Yunalish, id=request.POST.get('yunalish_id'))
+
+
     return render(request, 'tests.html', {
         'fan': fan,
+        'name': name,
+        'kurs': kurs,
+        'guruh': guruh,
+        'yonalish': yonalish,
         'questions': questions,  # fan_id bilan bir xil bo'lishi kerak emas, lekin xohlasangiz yuborish mumkin
     })
 

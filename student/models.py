@@ -82,11 +82,13 @@ class Guruh(models.Model):
 
 
 
-class Result(models.Model):
-    student = models.CharField(max_length= 200)  # Foydalanuvchi
-    correct_answers = models.IntegerField()  # To'g'ri javoblar soni
-    total_questions = models.IntegerField()  # Savollar soni
-    timestamp = models.DateTimeField(auto_now_add=True)  # Natija yozilgan vaqt
-
-    def str(self):
-        return f'{self.student} - {self.correct_answers} ta to\'g\'ri javob'
+class Natija(models.Model):
+    fan = models.ForeignKey(Fan, on_delete=models.CASCADE)
+    ism = models.CharField(max_length=100)
+    familiya = models.CharField(max_length=100)
+    kurs = models.IntegerField()
+    guruh = models.CharField(max_length=50)
+    yonalish = models.CharField(max_length=100)
+    togri_soni = models.IntegerField()
+    umumiy_savollar = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)

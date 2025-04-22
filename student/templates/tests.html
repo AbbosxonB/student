@@ -1,18 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ fan.name }} testi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .question-block {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .answers {
+            margin-left: 20px;
+        }
+
+        .answers label {
+            display: block;
+            margin: 5px 0;
+        }
+
+        .submit-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 30px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Salom dunyo!</h1>
-<h1>{{ fan }}</h1>
-{% for question in questions %}
-    <p>{{ question.question }}</p>
-    <p>{{ question.correct }}</p>
-    <p>{{ question.wrong1 }}</p>
-    <p>{{ question.wrong2 }}</p>
-    <p>{{ question.wrong3 }}</p>
-{% endfor %}
+
+<!-- <h1>{{ fan.name }} fanidan test</h1> -->
+<h1>FAN NOMI: {{ fan }}</h1>
+<h1>TALABA: {{ name }}</h1>
+<h1>YO'NALISH: {{ yonalish.name }}</h1>
+<h1>GURUH: {{ guruh.name }}</h1>
+<h1>KURS: {{ kurs.name }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% if questions %}
+        {% for question in questions %}
+            <div class="question-block">
+                <div class="question-text">{{ forloop.counter }}. {{ question.question }}</div>
+                <div class="answers">
+                    <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.correct }}"> {{ question.correct }}</label>
+                    <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.wrong1 }}"> {{ question.wrong1 }}</label>
+                    <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.wrong2 }}"> {{ question.wrong2 }}</label>
+                    <label><input type="radio" name="answer_{{ question.id }}" value="{{ question.wrong3 }}"> {{ question.wrong3 }}</label>
+                </div>
+            </div>
+        {% endfor %}
+        <button type="submit" class="submit-btn">Yuborish</button>
+    {% else %}
+        <h3 style="text-align: center;">Bu fandan test yuklanmagan</h3>
+    {% endif %}
+</form>
+
 </body>
 </html>
