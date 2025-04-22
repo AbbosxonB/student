@@ -74,13 +74,10 @@ def start_test(request):
 
 
 def test_views(request, id):
-    print("Request method:", request.method)
-    print("POST data:", request.POST)
-
-    fan_id = request.POST.get('fan_id') if request.method == 'POST' else None
-    questions = get_random_questions(fan_id)
+    fan = get_object_or_404(Fan, id=id)
+    questions = Test.objects.filter(fan=fan)
     return render(request, 'tests.html', {
-        'fan': fan_id,
+        'fan': fan,
         'questions': questions,  # fan_id bilan bir xil bo'lishi kerak emas, lekin xohlasangiz yuborish mumkin
     })
 
