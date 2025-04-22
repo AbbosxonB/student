@@ -11,116 +11,112 @@
   <div class="container">
     <img src="https://admission.tiiu.uz/_next/image?url=%2Fassets%2Funiver-logo.png&w=96&q=75" alt="Logo" class="logo">
     <h2>TEST</h2>
-    <form id="registrationForm" action="{% url 'tests' %}" method="post">
-    {% csrf_token %}
+    <form id="registrationForm" action="" method="post">
+      {% csrf_token %}
+      
       <label for="name">F.I.O</label>
-      <input type="text" id="name" placeholder="Familiya ismingizni kiriting:"   required>
-
-      <!-- <label for="email">Email</label>
-      <input type="email" id="email" placeholder="you@email.com" required> -->
+      <input type="text" id="name" name="name" placeholder="Familiya ismingizni kiriting:" required>
 
       <label for="yunalish">Yo'nalishi</label>
-      <select id="yunalish" required>
+      <select id="yunalish" name="yunalish_id" required>
         <option value="">Select...</option>
         {% for yunalish in yunalishlar %}
-        <option value="{{ yunalish.id }}">{{yunalish.name}}</option>
+          <option value="{{ yunalish.id }}">{{ yunalish.name }}</option>
         {% endfor %}
-       
-        <!-- Boshqa davlatlar qo‘shsa bo‘ladi -->
       </select>
 
       <label for="kurs">Kursi</label>
-      <select id="kurs" required>
+      <select id="kurs" name="kurs_id" required>
         <option value="">Select...</option>
         {% for kurs in kurslar %}
-        <option value="{{ kurs.id }}">{{kurs.name}}</option>
+          <option value="{{ kurs.id }}">{{ kurs.name }}</option>
         {% endfor %}
-       
-        <!-- Boshqa davlatlar qo‘shsa bo‘ladi -->
       </select>
 
       <label for="guruh">Guruh:</label>
-      <select id="guruh" required>
+      <select id="guruh" name="guruh_id" required>
         <option value="">Select...</option>
         {% for guruh in guruhlar %}
-        <option value="{{guruh.id}}">{{guruh.name}}</option>
+          <option value="{{ guruh.id }}">{{ guruh.name }}</option>
         {% endfor %}
-      
-        <!-- Boshqa davlatlar qo‘shsa bo‘ladi -->
       </select>
       
       <label for="fan">Fan nomi:</label>
       <select id="fan" name="fan_id" required>
         <option value="">Select...</option>
         {% for fan in fanlar %}
-        <option value="{{fan.id}}">{{fan.name}}</option>
+          <option value="{{ fan.id }}">{{ fan.name }}</option>
         {% endfor %}
-        
-        <!-- Boshqa davlatlar qo‘shsa bo‘ladi -->
       </select>
 
-        <a href="{% url 'tests' %}"><button  type="submit">Testni boshlash</button></a>
+      <button type="submit">Testni boshlash</button>
     </form>
   </div>
 
-  <script src="{% static 'js/form.js' %}"></script>
   <script>
-    document.getElementById("yunalish").addEventListener("change", function () {
-        const yunalishId = this.value;
-        fetch(`/ajax/kurslar/?yunalish_id=${yunalishId}`)
-            .then(res => res.json())
-            .then(data => {
-                let kursSelect = document.getElementById("kurs");
-                kursSelect.innerHTML = '<option value="">Kursni tanlang</option>';
-                data.kurslar.forEach(kurs => {
-                    kursSelect.innerHTML += `<option value="${kurs.id}">${kurs.name}</option>`;
-                });
-    
-                document.getElementById("guruh").innerHTML = '<option value="">Guruhni tanlang</option>';
-            });
+    document.addEventListener("DOMContentLoaded", function () {
+      // AJAX – Kurslar yuklash
+      document.getElementById("yunalish").addEventListener("change", function () {
+          const yunalishId = this.value;
+          fetch(`/ajax/kurslar/?yunalish_id=${yunalishId}`)
+              .then(res => res.json())
+              .then(data => {
+                  const kursSelect = document.getElementById("kurs");
+                  kursSelect.innerHTML = '<option value="">Kursni tanlang</option>';
+                  data.kurslar.forEach(kurs => {
+                      kursSelect.innerHTML += `<option value="${kurs.id}">${kurs.name}</option>`;
+                  });
+
+                  document.getElementById("guruh").innerHTML = '<option value="">Guruhni tanlang</option>';
+                  document.getElementById("fan").innerHTML = '<option value="">Fanni tanlang</option>';
+              });
+      });
+
+      // AJAX – Guruhlar yuklash
+      document.getElementById("kurs").addEventListener("change", function () {
+          const kursId = this.value;
+          const yunalishId = document.getElementById("yunalish").value;
+          fetch(`/ajax/guruhlar/?yunalish_id=${yunalishId}&kurs_id=${kursId}`)
+              .then(res => res.json())
+              .then(data => {
+                  const guruhSelect = document.getElementById("guruh");
+                  guruhSelect.innerHTML = '<option value="">Guruhni tanlang</option>';
+                  data.guruhlar.forEach(guruh => {
+                      guruhSelect.innerHTML += `<option value="${guruh.id}">${guruh.name}</option>`;
+                  });
+
+                  document.getElementById("fan").innerHTML = '<option value="">Fanni tanlang</option>';
+              });
+      });
+
+      // AJAX – Fanlar yuklash
+      document.getElementById("guruh").addEventListener("change", function () {
+          const guruhId = this.value;
+          fetch(`/ajax/fanlar/?guruh_id=${guruhId}`)
+              .then(res => res.json())
+              .then(data => {
+                  const fanSelect = document.getElementById("fan");
+                  fanSelect.innerHTML = '<option value="">Fanni tanlang</option>';
+                  data.fanlar.forEach(fan => {
+                      fanSelect.innerHTML += `<option value="${fan.id}">${fan.name}</option>`;
+                  });
+              });
+      });
+
+      // Formani boshqa sahifaga yo'naltirish
+      const form = document.getElementById("registrationForm");
+      form.addEventListener("submit", function (e) {
+          const fanId = document.getElementById("fan").value;
+
+          if (!fanId) {
+              alert("Iltimos, fanni tanlang!");
+              e.preventDefault();
+              return;
+          }
+
+          this.action = `/test/${fanId}/`;
+      });
     });
-    
-    document.getElementById("kurs").addEventListener("change", function () {
-        const kursId = this.value;
-        const yunalishId = document.getElementById("yunalish").value;
-        fetch(`/ajax/guruhlar/?yunalish_id=${yunalishId}&kurs_id=${kursId}`)
-            .then(res => res.json())
-            .then(data => {
-                let guruhSelect = document.getElementById("guruh");
-                guruhSelect.innerHTML = '<option value="">Guruhni tanlang</option>';
-                data.guruhlar.forEach(guruh => {
-                    guruhSelect.innerHTML += `<option value="${guruh.id}">${guruh.name}</option>`;
-                });
-            });
-    });
-
-    document.getElementById("guruh").addEventListener("change", function(){
-    const guruhId = this.value;
-
-    fetch(`/ajax/fanlar/?guruh_id=${guruhId}`)
-        .then(res => res.json())
-        .then(data => {
-            let fanSelect = document.getElementById("fan");
-            fanSelect.innerHTML = '<option value="">Fanni tanlang</option>';
-            data.fanlar.forEach(fan => {
-                fanSelect.innerHTML += `<option value="${fan.id}">${fan.name}</option>`;
-            });
-        });
-});
-
-
-  document.getElementById("registrationForm").addEventListener("submit", function (e) {
-      const fanId = document.getElementById("fan").value;
-      if (!fanId) {
-          alert("Iltimos, fanni tanlang!");
-          e.preventDefault();
-          return;
-      }
-
-      this.action = `/test/${fanId}/`;  // bu `urls.py` dagi path bilan mos bo‘lishi kerak
-  });
-
-
-    </script>
+  </script>
 </body>
 </html>

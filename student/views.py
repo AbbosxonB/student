@@ -71,17 +71,19 @@ def start_test(request):
         })
     return render(request, 'form.html')
 
-def test_views(request):
+
+
+def test_views(request, id):
     print("Request method:", request.method)
     print("POST data:", request.POST)
-    if request.method == 'POST':
-        fan_id = request.POST.get('fan_id')
-    else:
-        fan_id = None
 
+    fan_id = request.POST.get('fan_id') if request.method == 'POST' else None
+    questions = get_random_questions(fan_id)
     return render(request, 'tests.html', {
         'fan': fan_id,
+        'questions': questions,  # fan_id bilan bir xil bo'lishi kerak emas, lekin xohlasangiz yuborish mumkin
     })
+
 
 
 

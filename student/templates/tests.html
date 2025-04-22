@@ -7,5 +7,12 @@
 <body>
 <h1>Salom dunyo!</h1>
 <h1>{{ fan }}</h1>
+{% for question in questions %}
+    <p>{{ question.question }}</p>
+    <p>{{ question.correct }}</p>
+    <p>{{ question.wrong1 }}</p>
+    <p>{{ question.wrong2 }}</p>
+    <p>{{ question.wrong3 }}</p>
+{% endfor %}
 </body>
 </html>
