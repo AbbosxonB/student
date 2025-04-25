@@ -16,7 +16,9 @@ from django import forms
 class YunalishAdmin(admin.ModelAdmin):
     list_display = ['name', 'status']
 
-
+@admin.register(Natija)
+class NatijaAdmin(admin.ModelAdmin):
+    list_display = ['ism', 'guruh', 'yonalish','togri_soni', 'umumiy_savollar']
 
 @admin.register(Kursi)
 class KursiAdmin(admin.ModelAdmin):
