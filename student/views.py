@@ -37,8 +37,8 @@ def get_fanlar(request):
     data = [{'id': f.id, 'name': f.name} for f in fanlar]
     return JsonResponse({'fanlar': data})
 
-def saqlash(request):
-    return render(request, 'test.html')
+# def saqlash(request):
+#     return render(request, 'test.html')
 
 
 from random import sample
@@ -84,7 +84,7 @@ def test_views(request, id):
         guruh = get_object_or_404(Guruh, id=request.POST.get('guruh_id'))
         yonalish = get_object_or_404(Yunalish, id=request.POST.get('yunalish_id'))
 
-       
+
 
 
     return render(request, 'tests.html', {
@@ -97,15 +97,16 @@ def test_views(request, id):
     })
 
 
-<<<<<<< Updated upstream
-def submit_test(request, id):
-    
+
+def submit_test(request):
+
 
     if request.method == "POST":
+        id = request.POST.get('fan_id')
         fan = get_object_or_404(Fan, id=id)
         questions = Test.objects.filter(fan=fan)
         name = request.POST.get('name')
-        # fan= request.POST.get('fan_id')
+        fan= request.POST.get('fan_id')
         kurs = get_object_or_404(Kursi,id=request.POST.get('kurs_id'))
         guruh = get_object_or_404(Guruh, id=request.POST.get('guruh_id'))
         yonalish = get_object_or_404(Yunalish, id=request.POST.get('yunalish_id'))
@@ -145,17 +146,8 @@ def submit_test(request, id):
 
 
 
-
-
-
-
-
-
-=======
 def natija(request):
     return render(request, 'natija.html')
-z
->>>>>>> Stashed changes
 
 
 
