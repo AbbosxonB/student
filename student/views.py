@@ -97,6 +97,7 @@ def test_views(request, id):
     })
 
 
+<<<<<<< Updated upstream
 def submit_test(request, id):
     
 
@@ -150,6 +151,11 @@ def submit_test(request, id):
 
 
 
+=======
+def natija(request):
+    return render(request, 'natija.html')
+z
+>>>>>>> Stashed changes
 
 
 
