@@ -1,10 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from pyexpat.errors import messages
+from django.contrib import messages
+
 
 from .models import *
 from openpyxl import load_workbook
 # Create your views here.
+
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='login')
+def dashboard(request):
+    # Sizning dashboard kodi
+    return render(request, 'dashboard/dashboard.html')
+
+
 def index(request):
     return render(request, 'index.html')
 
@@ -79,6 +90,8 @@ def start_test(request):
 def test_views(request, id):
     fan = get_object_or_404(Fan, id=id)
     questions = Test.objects.filter(fan=fan)
+    if questions.count() > 25:
+        questions = sample(list(questions), 25)
 
     if request.method == "POST":
         name = request.POST.get('name')
@@ -153,26 +166,42 @@ def natija(request):
     return render(request, 'natija.html')
 
 def upload_test(request):
+    fanlar = Fan.objects.all()
+
     if request.method == "POST" and request.FILES.get("excel_file"):
-        excel_file = request.FILES['excel_file']
+        fan_id = request.POST.get("fan_id")
+        try:
+            fan_obj = Fan.objects.get(id=fan_id)
+        except Fan.DoesNotExist:
+            messages.error(request, "Tanlangan fan topilmadi.")
+            return redirect('upload_test')
+
+        excel_file = request.FILES["excel_file"]
         try:
             wb = load_workbook(excel_file)
             ws = wb.active
 
-            for row in ws.values(min_row = 2, value_only = True):
-                if row[0]:
-                    Test.objects.create(
-                        question=row[1],
-                        correct=row[2],
-                        wrong1=row[3],
-                        wrong2=row[4],
-                        wrong3=row[5],
-                    )
-            messages.success(request, 'Tests saved')
-            return redirect('upload_test')
+            for idx, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+                if not row[0] or not row[1]:
+                    messages.warning(request, f"{idx}-qatorda savol yoki to‘g‘ri javob yo‘q — o‘tkazib yuborildi.")
+                    continue
+
+                test = Test.objects.create(
+                    question=row[0],
+                    correct=row[1],
+                    wrong1=row[2] or '',
+                    wrong2=row[3] or '',
+                    wrong3=row[4] or '',
+                )
+                test.fan.set([fan_obj])
+
+            messages.success(request, "Testlar saqlandi!")
+            return redirect("upload_test")
+
         except Exception as e:
-            messages.error(request, 'Xatolik yuz berdi!', e)
-    return render(request, 'natija.html')
+            messages.error(request, f"Xatolik yuz berdi: {e}")
+
+    return render(request, "upload.html", {"fanlar": fanlar})
 
 
 

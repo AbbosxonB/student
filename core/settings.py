@@ -101,6 +101,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = 'login'  # Login sahifasi URL nomi
+LOGIN_REDIRECT_URL = 'dashboard'  # Tizimga kirgandan keyingi sahifa
+LOGOUT_REDIRECT_URL = 'login'  # Chiqgandan keyingi sahifa
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -134,3 +138,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")  # Media fayllar joylashuvi
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'dashboard'

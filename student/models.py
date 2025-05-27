@@ -92,3 +92,4 @@ class Natija(models.Model):
     togri_soni = models.IntegerField()
     umumiy_savollar = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+

@@ -7,12 +7,24 @@
     <link rel="stylesheet" href="{% static 'css/form.css' %}">
 </head>
 <body>
- <label for="fan">Fan nomi:</label>
+
+
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+         <label for="fan">Fan nomi:</label>
       <select id="fan" name="fan_id" required>
         <option value="">Select...</option>
         {% for fan in fanlar %}
           <option value="{{ fan.id }}">{{ fan.name }}</option>
         {% endfor %}
       </select>
+        <div class="form-group">
+            <label for="excel_file">Excel faylni tanlang (.xlsx)</label>
+            <input type="file" class="form-control-file" id="excel_file" name="excel_file" accept=".xlsx" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Yuklash</button>
+    </form>
+
 </body>
 </html>
