@@ -2,7 +2,7 @@ from django.urls import path
 
 
 from student import views
-
+from student.views import upload_test
 
 urlpatterns = [
 
@@ -12,6 +12,7 @@ urlpatterns = [
  path('ajax/fanlar/', views.get_fanlar, name='ajax_fanlar'),
  path('start-test/<int:id>/', views.test_views, name='start_test'),
  path('submit-test/<int:fan_id>/', views.submit_test, name='submit_test'),
+ path('upload-test/', upload_test, name='upload_test'),
  # path('tests/', views.test_views, name='tests'),
 
 #  path('form/', views.form, name='form'),

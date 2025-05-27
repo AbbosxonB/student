@@ -1,6 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from pyexpat.errors import messages
+
 from .models import *
+from openpyxl import load_workbook
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
@@ -148,6 +151,30 @@ def submit_test(request):
 
 def natija(request):
     return render(request, 'natija.html')
+
+def upload_test(request):
+    if request.method == "POST" and request.FILES.get("excel_file"):
+        excel_file = request.FILES['excel_file']
+        try:
+            wb = load_workbook(excel_file)
+            ws = wb.active
+
+            for row in ws.values(min_row = 2, value_only = True):
+                if row[0]:
+                    Test.objects.create(
+                        question=row[1],
+                        correct=row[2],
+                        wrong1=row[3],
+                        wrong2=row[4],
+                        wrong3=row[5],
+                    )
+            messages.success(request, 'Tests saved')
+            return redirect('upload_test')
+        except Exception as e:
+            messages.error(request, 'Xatolik yuz berdi!', e)
+    return render(request, 'natija.html')
+
+
 
 
 

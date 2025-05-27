@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>upload</title>
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+</head>
+<body>
+ <label for="fan">Fan nomi:</label>
+      <select id="fan" name="fan_id" required>
+        <option value="">Select...</option>
+        {% for fan in fanlar %}
+          <option value="{{ fan.id }}">{{ fan.name }}</option>
+        {% endfor %}
+      </select>
+</body>
+</html>
