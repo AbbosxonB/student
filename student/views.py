@@ -6,14 +6,31 @@ from django.contrib import messages
 
 from .models import *
 from openpyxl import load_workbook
-# Create your views here.
+from django.contrib.auth import authenticate, login
+
+# from django.contrib.auth.decorators import login_required
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')  # bu url nomi bo'lishi kerak
+        else:
+            return render(request, 'login.html', {
+                'error': 'Username or password is incorrect'
+            })
+    return render(request, 'login.html')
 
 from django.contrib.auth.decorators import login_required
 
-@login_required(login_url='login')
-def dashboard(request):
-    # Sizning dashboard kodi
+@login_required
+def dashboard_view(request):
     return render(request, 'dashboard/dashboard.html')
+
 
 
 def index(request):
